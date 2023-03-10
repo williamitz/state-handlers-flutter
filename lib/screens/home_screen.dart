@@ -75,9 +75,9 @@ class HomeScreen extends StatelessWidget {
                       //   leading: Icon( Icons.circle ),
                       // ),
                     
-                      ...userProv.getUser!.jobs.map((e) => const ListTile(
-                        title: Text('Trabajo n3'),
-                        leading: Icon( Icons.circle ),
+                      ...userProv.getUser!.jobs.map((e) => ListTile(
+                        title: Text(e),
+                        leading: const Icon( Icons.circle ),
                       )).toList()
                 
                     ],
