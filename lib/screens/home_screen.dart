@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:handler_state_app/providers/user_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -7,6 +10,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     // final jobs = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+    final userProv = Provider.of<UserProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -20,66 +24,75 @@ class HomeScreen extends StatelessWidget {
             children: [
           
               const _TitleHome(),
-          
-              Container(
+
+              if( userProv.getUser != null )
+                Container(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                
+                      const Text(
+                        'Info del usuario',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400
+                        ),
+                      ),
+                
+                      ListTile(
+                        title: Text('Nombre: ${ userProv.getUser?.name }'),
+                        leading: Icon( Icons.person ),
+                      ),
+                
+                      ListTile(
+                        title: Text('Edad: ${ userProv.getUser?.years }'),
+                        leading: Icon( Icons.timelapse ),
+                      ),
+                
+                      ListTile(
+                        title: Text('Email: ${ userProv.getUser?.email }'),
+                        leading: Icon( Icons.mail_outline ),
+                      ),
+                
+                      const SizedBox(height: 20,),
+                
+                      const Text(
+                        'Trabajos',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400
+                        ),
+                      ),
+                
+                      // ListTile(
+                      //   title: Text('Trabajo n1 '),
+                      //   leading: Icon( Icons.circle ),
+                      // ),
+                
+                      // ListTile(
+                      //   title: Text('Trabajo n2 '),
+                      //   leading: Icon( Icons.circle ),
+                      // ),
+                    
+                      ...userProv.getUser!.jobs.map((e) => const ListTile(
+                        title: Text('Trabajo n3'),
+                        leading: Icon( Icons.circle ),
+                      )).toList()
+                
+                    ],
+                
+                  ),
+                )
+
+              else Container(
                 padding: EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-              
-                    Text(
-                      'Info del usuario',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400
-                      ),
-                    ),
-              
-                    ListTile(
-                      title: Text('Nombre: '),
-                      leading: Icon( Icons.person ),
-                    ),
-              
-                    ListTile(
-                      title: Text('Edad: '),
-                      leading: Icon( Icons.timelapse ),
-                    ),
-              
-                    ListTile(
-                      title: Text('Email: '),
-                      leading: Icon( Icons.mail_outline ),
-                    ),
-              
-                    SizedBox(height: 20,),
-              
-                    Text(
-                      'Trabajos',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400
-                      ),
-                    ),
-              
-                    ListTile(
-                      title: Text('Trabajo n1 '),
-                      leading: Icon( Icons.circle ),
-                    ),
-              
-                    ListTile(
-                      title: Text('Trabajo n2 '),
-                      leading: Icon( Icons.circle ),
-                    ),
-          
-                    // ...jobs.map((e) => const ListTile(
-                    //   title: Text('Trabajo n3'),
-                    //   leading: Icon( Icons.circle ),
-                    // )).toList()
-              
-                  ],
-              
+                child: Text(
+                  'Usuario no especificado',
+                  style: Theme.of(context).textTheme.headline5,
                 ),
               )
-          
+
             ],
           
           ),
