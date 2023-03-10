@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:handler_state_app/models/user.model.dart';
+import 'package:handler_state_app/providers/user/user_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -20,65 +23,20 @@ class HomeScreen extends StatelessWidget {
             children: [
           
               const _TitleHome(),
-          
-              Container(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-              
-                    Text(
-                      'Info del usuario',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400
+
+              BlocBuilder<UserBloc, UserState>(
+                builder: ( _ , state) {
+                  return state.haveUser 
+                    ? _InfoUser( user: state.user, )
+                    : Container(
+                      padding: const EdgeInsets.all(20),
+                      child: Text(
+                        'Usuario no especificado',
+                        style: Theme.of(context).textTheme.headline5,
                       ),
-                    ),
-              
-                    ListTile(
-                      title: Text('Nombre: '),
-                      leading: Icon( Icons.person ),
-                    ),
-              
-                    ListTile(
-                      title: Text('Edad: '),
-                      leading: Icon( Icons.timelapse ),
-                    ),
-              
-                    ListTile(
-                      title: Text('Email: '),
-                      leading: Icon( Icons.mail_outline ),
-                    ),
-              
-                    SizedBox(height: 20,),
-              
-                    Text(
-                      'Trabajos',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400
-                      ),
-                    ),
-              
-                    ListTile(
-                      title: Text('Trabajo n1 '),
-                      leading: Icon( Icons.circle ),
-                    ),
-              
-                    ListTile(
-                      title: Text('Trabajo n2 '),
-                      leading: Icon( Icons.circle ),
-                    ),
-          
-                    // ...jobs.map((e) => const ListTile(
-                    //   title: Text('Trabajo n3'),
-                    //   leading: Icon( Icons.circle ),
-                    // )).toList()
-              
-                  ],
-              
-                ),
-              )
+                    );
+                },
+              )              
           
             ],
           
@@ -90,6 +48,78 @@ class HomeScreen extends StatelessWidget {
         child: const Icon( Icons.emoji_people_outlined ),
       ),
       
+    );
+  }
+}
+
+class _InfoUser extends StatelessWidget {
+
+  final User? user;
+
+  const _InfoUser({
+    Key? key, required this.user,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+    
+          const Text(
+            'Info del usuario',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w400
+            ),
+          ),
+    
+          ListTile(
+            title: Text('Nombre: ${ user?.name }'),
+            leading: Icon( Icons.person ),
+          ),
+    
+          ListTile(
+            title: Text('Edad: ${ user?.years }'),
+            leading: Icon( Icons.timelapse ),
+          ),
+    
+          ListTile(
+            title: Text('Email: ${ user?.email }'),
+            leading: Icon( Icons.mail_outline ),
+          ),
+    
+          const SizedBox(height: 20,),
+    
+          const Text(
+            'Trabajos',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w400
+            ),
+          ),
+    
+          // ListTile(
+          //   title: Text('Trabajo n1 '),
+          //   leading: Icon( Icons.circle ),
+          // ),
+    
+          // ListTile(
+          //   title: Text('Trabajo n2 '),
+          //   leading: Icon( Icons.circle ),
+          // ),
+          
+          if( user != null )
+            ...user!.jobs.map((e) => ListTile(
+              title: Text( e ),
+              leading: const Icon( Icons.circle ),
+            )).toList()
+    
+        ],
+    
+      ),
     );
   }
 }

@@ -30,5 +30,20 @@ class User {
         jobs: List<String>.from(json["jobs"].map((x) => x)),
     );
 
+    copyWith({
+        String? id,
+        String? name,
+        String? email,
+        int? years,
+        List<String>? jobs,
+    }) {
+      return User(
+        id: id ?? this.id, 
+        name: name ?? this.name, 
+        email: email ?? this.email, 
+        years: years ?? this.years, 
+        jobs: jobs ?? this.jobs
+      );
+    }
 
 }
