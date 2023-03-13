@@ -6,14 +6,14 @@ import 'dart:convert';
 
 class User {
     User({
-        required this.id,
+        this.id,
         required this.name,
         required this.email,
         required this.years,
         required this.jobs,
     });
 
-    String id;
+    String? id;
     String name;
     String email;
     int years;
